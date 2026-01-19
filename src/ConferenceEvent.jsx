@@ -60,7 +60,7 @@ const ConferenceEvent = () => {
         });
 
         avItems.forEach((item) => {
-            if (item.quantity > 0 && !items,some((i) => i.name === item.name && i.type === "av")) {
+            if (item.quantity > 0 && !items.some((i) => i.name === item.name && i.type === "av")) {
                 items.push({ ...item, type: "av" });
             }
         });
@@ -76,8 +76,6 @@ const ConferenceEvent = () => {
         });
         return items;
     };
-
-    const items = getItemsFromTotalCost();
 
     const ItemsDisplay = ({ items }) => {
         console.log(items);
