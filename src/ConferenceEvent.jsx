@@ -15,10 +15,6 @@ const ConferenceEvent = () => {
     const dispatch = useDispatch();
     const remainingAuditoriumQuantity = 3 - venueItems.find(item => item.name === "Auditorium Hall (Capacity:200)").quantity;
 
-    const items = getItemsFromTotalCost();
-
-    
-
     const handleToggleItems = () => {
         console.log("handleToggleItems called");
         setShowItems(!showItems);
@@ -55,6 +51,43 @@ const ConferenceEvent = () => {
        }
     };
 
+    const calculateTotalCost = (section) => {
+        let totalCost = 0;
+        if (section === "venue") {
+          venueItems.forEach((item) => {
+            totalCost += item.cost * item.quantity;
+          });
+        } else if (section === "av") {
+            avItems.forEach((item) => {
+                totalCost += item.cost * item.quantity;
+            });
+        } else if (section === "meals") {
+            mealsItems.forEach((item) => {
+                if (item.selected) {
+                    totalCost += item.cost * numberOfPeople;
+                }
+            });
+        }
+        return totalCost;
+      };
+    const venueTotalCost = calculateTotalCost("venue");
+    const avTotalCost = calculateTotalCost("av");
+    const mealsTotalCost = calculateTotalCost("meals");
+
+    const navigateToProducts = (idType) => {
+        if (idType == '#venue' || idType == '#addons' || idType == '#meals') {
+          if (showItems) { // Check if showItems is false
+            setShowItems(!showItems); // Toggle showItems to true only if it's currently false
+          }
+        }
+    }
+
+    const totalCosts = {
+        venue: venueTotalCost,
+        av: avTotalCost,
+        meals: mealsTotalCost,
+    };
+
     const getItemsFromTotalCost = () => {
         const items = [];
         venueItems.forEach((item) => {
@@ -80,6 +113,8 @@ const ConferenceEvent = () => {
         });
         return items;
     };
+
+    const items = getItemsFromTotalCost();
 
     const ItemsDisplay = ({ items }) => {
         console.log(items);
@@ -113,37 +148,6 @@ const ConferenceEvent = () => {
             </div>
         </>
     };
-
-    const calculateTotalCost = (section) => {
-        let totalCost = 0;
-        if (section === "venue") {
-          venueItems.forEach((item) => {
-            totalCost += item.cost * item.quantity;
-          });
-        } else if (section === "av") {
-            avItems.forEach((item) => {
-                totalCost += item.cost * item.quantity;
-            });
-        } else if (section === "meals") {
-            mealsItems.forEach((item) => {
-                if (item.selected) {
-                    totalCost += item.cost * numberOfPeople;
-                }
-            });
-        }
-        return totalCost;
-      };
-    const venueTotalCost = calculateTotalCost("venue");
-    const avTotalCost = calculateTotalCost("av");
-    const mealsTotalCost = calculateTotalCost("meals");
-
-    const navigateToProducts = (idType) => {
-        if (idType == '#venue' || idType == '#addons' || idType == '#meals') {
-          if (showItems) { // Check if showItems is false
-            setShowItems(!showItems); // Toggle showItems to true only if it's currently false
-          }
-        }
-    }
 
     return (
         <>
