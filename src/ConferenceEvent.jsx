@@ -149,7 +149,7 @@ const ConferenceEvent = () => {
         }
     }
 
-    
+    const total_amount = totalCosts.venue + totalCosts.av + totalCosts.meals;
 
     return (
         <>
